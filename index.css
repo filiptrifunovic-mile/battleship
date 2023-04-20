@@ -1,0 +1,68 @@
+body,
+html {
+  background-color: black;
+  margin: 0;
+  padding: 0;
+}
+
+#board {
+  position: relative;
+  background: url("board.jpg");
+  width: 1024px;
+  height: 863px;
+  margin: 0 auto;
+}
+
+#messageArea {
+  position: absolute;
+  color: white;
+  top: 0px;
+  left: 0px;
+  color: rgb(83, 175, 19);
+  font-size: 30px;
+}
+
+table {
+  position: absolute;
+  left: 173px;
+  top: 98px;
+  /* border-spacing: 0px; */
+}
+
+td {
+  width: 94px;
+  height: 94px;
+  padding: 0;
+  margin: 0;
+}
+
+form {
+  position: absolute;
+  bottom: -38px;
+  right: 0px;
+  padding: 15px;
+  background-color: rgb(83, 175, 19);
+}
+
+form input {
+  background-color: rgb(152, 207, 113);
+  border-color: rgb(83, 175, 19);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+#fireButton {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 2px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.hit {
+  background: url(ship.png) no-repeat center center;
+}
+
+.miss {
+  background: url(miss.png) no-repeat center center;
+}
