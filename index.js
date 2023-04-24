@@ -71,7 +71,22 @@ const model = {
 // CONTROLER objekat, zaduzen je da spoji delove aplikacije
 const controller = {
   guesses: 0,
-  processGuess: function (guess) {},
+  processGuess: function (guess) {
+    const location = parseGuess(guess);
+    if (location) {
+      this.guesses++;
+      const hit = model.fire(location);
+      if (hit && model.shipSunk === model.numShips) {
+        view.displayMessage(
+          `You sank all my battleships, in ${this.guesses} guesses`
+        );
+        const fire = document.getElementById("fireButton");
+        fire.setAttribute("disabled", true);
+        fire.setAttribute("id", "fireButton2");
+        console.log(fire);
+      }
+    }
+  },
 };
 
 // pomocna funkcija koja ce proveriti da li je input od igraca validan
@@ -100,3 +115,30 @@ function parseGuess(guess) {
   }
   return null;
 }
+
+//funkcija za poziv "fire" dugmeta prilikom klika
+
+function init() {
+  const fireButton = document.getElementById("fireButton");
+  fireButton.onclick = handleFireButton;
+
+  const guessInput = document.getElementById("guessInput");
+  guessInput.onkeydown = handleKeyPress;
+}
+
+function handleFireButton() {
+  const guessInput = document.getElementById("guessInput");
+  const guess = guessInput.value;
+  controller.processGuess(guess);
+  guessInput.value = "";
+}
+
+function handleKeyPress(e) {
+  const fireButton = document.getElementById("fireButton");
+  if (e.keyCode === 13) {
+    fireButton.click();
+    return false;
+  }
+}
+
+window.onload = init;

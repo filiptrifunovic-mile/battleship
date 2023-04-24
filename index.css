@@ -59,6 +59,14 @@ form input {
   font-size: 1.1rem;
 }
 
+#fireButton2 {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 2px;
+  font-size: 1.1rem;
+  cursor: not-allowed;
+}
+
 .hit {
   background: url(ship.png) no-repeat center center;
 }
