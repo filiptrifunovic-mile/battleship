@@ -22,15 +22,15 @@ const model = {
   shipSunk: 0,
   ships: [
     {
-      locations: ["06", "16", "26"],
+      locations: ["0", "0", "0"],
       hits: ["", "", ""],
     },
     {
-      locations: ["24", "34", "44"],
+      locations: ["0", "0", "0"],
       hits: ["", "", ""],
     },
     {
-      locations: ["10", "11", "12"],
+      locations: ["0", "0", "0"],
       hits: ["", "", ""],
     },
   ],
@@ -66,6 +66,52 @@ const model = {
     }
     return true;
   },
+  generateShipLocations: function () {
+    let locations;
+    for (let i = 0; i < this.numShips; i++) {
+      do {
+        locations = this.generateShip();
+      } while (this.collision(locations));
+      this.ships[i].locations = locations;
+    }
+  },
+
+  generateShip: function () {
+    const direction = Math.floor(Math.random() * 2);
+    let row;
+    let col;
+    if (direction === 1) {
+      row = Math.floor(Math.random() * this.boardSize);
+      col = Math.floor(
+        Math.random() * (this.boardSize - (this.shipLength + 1))
+      );
+    } else {
+      row = Math.floor(
+        Math.random() * (this.boardSize - (this.shipLength + 1))
+      );
+      col = Math.floor(Math.random() * this.boardSize);
+    }
+    const newShipsLocations = [];
+    for (let i = 0; i < this.shipLength; i++) {
+      if (direction === 1) {
+        newShipsLocations.push(row + "" + (col + i));
+      } else {
+        newShipsLocations.push(row + i + "" + col);
+      }
+    }
+    return newShipsLocations;
+  },
+  collision: function (locations) {
+    for (let i = 0; i < this.numShips; i++) {
+      const ship = this.ships[i];
+      for (let j = 0; j < locations.length; j++) {
+        if (ship.locations.indexOf(locations[j]) >= 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  },
 };
 
 // CONTROLER objekat, zaduzen je da spoji delove aplikacije
@@ -83,7 +129,6 @@ const controller = {
         const fire = document.getElementById("fireButton");
         fire.setAttribute("disabled", true);
         fire.setAttribute("id", "fireButton2");
-        console.log(fire);
       }
     }
   },
@@ -116,14 +161,15 @@ function parseGuess(guess) {
   return null;
 }
 
-//funkcija za poziv "fire" dugmeta prilikom klika
-
+//funkcija za poziv "fire" dugmeta prilikom klika, i pritiska enter dugmeta
 function init() {
   const fireButton = document.getElementById("fireButton");
   fireButton.onclick = handleFireButton;
 
   const guessInput = document.getElementById("guessInput");
   guessInput.onkeydown = handleKeyPress;
+
+  model.generateShipLocations();
 }
 
 function handleFireButton() {
